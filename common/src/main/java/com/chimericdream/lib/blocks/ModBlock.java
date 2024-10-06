@@ -1,61 +1,23 @@
 package com.chimericdream.lib.blocks;
 
+import com.chimericdream.lib.util.Registerable;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.TextureMap;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-abstract public class ModBlock extends Block implements ModBlockDataGenerator {
-    protected final ModBlockConfig config;
+abstract public class ModBlock extends Block implements ModBlockDataGenerator, Registerable {
+    public final ModBlockConfig config;
 
     public ModBlock(ModBlockConfig config) {
         super(config.getBaseSettings());
 
         this.config = config;
-    }
-
-    abstract public void register();
-
-    public Block getIngredient() {
-        return config.getIngredient();
-    }
-
-    public Block getIngredient(String key) {
-        return config.getIngredient(key);
-    }
-
-    public Map<String, Block> getIngredients() {
-        return config.ingredients;
-    }
-
-    public String getMaterial() {
-        return config.material;
-    }
-
-    public String getMaterialName() {
-        return config.materialName;
-    }
-
-    public Identifier getTexture() {
-        return config.getTexture();
-    }
-
-    public Identifier getTexture(String name) {
-        return config.getTexture(name);
-    }
-
-    public boolean isFlammable() {
-        return config.isFlammable;
-    }
-
-    public boolean isTranslucent() {
-        return config.isTranslucent;
     }
 
     public static class ModBlockConfig {
@@ -81,9 +43,17 @@ abstract public class ModBlock extends Block implements ModBlockDataGenerator {
             return this;
         }
 
+        public String getMaterial() {
+            return material;
+        }
+
         public ModBlockConfig materialName(String materialName) {
             this.materialName = materialName;
             return this;
+        }
+
+        public String getMaterialName() {
+            return materialName;
         }
 
         public ModBlockConfig ingredient(Block block) {
@@ -96,8 +66,12 @@ abstract public class ModBlock extends Block implements ModBlockDataGenerator {
             return this;
         }
 
-        @Nullable
+        @NotNull
         public Block getIngredient() {
+            if (!ingredients.containsKey("default")) {
+                throw new IllegalStateException("No default ingredient set");
+            }
+
             return ingredients.get("default");
         }
 
@@ -115,6 +89,10 @@ abstract public class ModBlock extends Block implements ModBlockDataGenerator {
             return flammable(true);
         }
 
+        public boolean isFlammable() {
+            return isFlammable;
+        }
+
         public ModBlockConfig translucent(boolean isTranslucent) {
             this.isTranslucent = isTranslucent;
             return this;
@@ -122,6 +100,10 @@ abstract public class ModBlock extends Block implements ModBlockDataGenerator {
 
         public ModBlockConfig translucent() {
             return translucent(true);
+        }
+
+        public boolean isTranslucent() {
+            return isTranslucent;
         }
 
         public ModBlockConfig texture(Identifier texture) {
@@ -133,7 +115,7 @@ abstract public class ModBlock extends Block implements ModBlockDataGenerator {
             return this;
         }
 
-        @Nullable
+        @NotNull
         public Identifier getTexture() {
             return textures.getOrDefault("default", TextureMap.getId(this.getIngredient()));
         }
