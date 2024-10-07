@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 abstract public class FabricModBlockWithEntity extends FabricModBlock implements BlockEntityProvider {
-    public FabricModBlockWithEntity(ModBlockConfig config) {
+    public FabricModBlockWithEntity(Config config) {
         super(config);
     }
 

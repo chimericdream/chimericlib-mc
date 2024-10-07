@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 abstract public class ModBlockWithEntity extends ModBlock implements BlockEntityProvider {
-    public ModBlockWithEntity(ModBlockConfig config) {
+    public ModBlockWithEntity(Config config) {
         super(config);
     }
 

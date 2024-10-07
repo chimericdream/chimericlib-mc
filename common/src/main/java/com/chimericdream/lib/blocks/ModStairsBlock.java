@@ -5,9 +5,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.StairsBlock;
 
 abstract public class ModStairsBlock extends StairsBlock implements ModBlockDataGenerator, Registerable {
-    public final ModBlock.ModBlockConfig config;
+    public final ModBlock.Config config;
 
-    public ModStairsBlock(BlockState baseBlockState, ModBlock.ModBlockConfig config) {
+    public ModStairsBlock(BlockState baseBlockState, ModBlock.Config config) {
         super(baseBlockState, config.getBaseSettings());
 
         this.config = config;
