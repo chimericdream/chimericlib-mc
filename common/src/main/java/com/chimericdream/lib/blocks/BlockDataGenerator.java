@@ -6,7 +6,7 @@ import net.minecraft.data.server.loottable.BlockLootTableGenerator;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.registry.RegistryWrapper;
 
-public interface ModBlockDataGenerator {
+public interface BlockDataGenerator {
     default void configureRecipes(RecipeExporter exporter) {
     }
 
