@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "chimericlib"
 authors = "chimericdream"
 description = '''
- Minecraft mod library for Fabric and NeoForge containing shared code for all my mods.
+Shared library with common code for chimericdream's mods.
 '''
 #logoFile = ""
 

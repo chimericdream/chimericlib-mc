@@ -3,7 +3,7 @@
     "id": "chimericlib",
     "version": "${version}",
     "name": "chimericlib",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "description": "Shared library with common code for chimericdream's mods.",
     "authors": [
         "chimericdream"
     ],
