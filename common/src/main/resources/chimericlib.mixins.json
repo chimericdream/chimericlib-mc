@@ -5,9 +5,7 @@
     "minVersion": "0.8",
     "client": [
     ],
-    "mixins": [
-        "PointOfInterestTypesAccessor"
-    ],
+    "mixins": [],
     "injectors": {
         "defaultRequire": 1
     }
