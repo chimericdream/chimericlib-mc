@@ -1,12 +1,12 @@
 package com.chimericdream.lib.blocks;
 
+import com.chimericdream.lib.util.Tool;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -19,6 +19,7 @@ public class BlockConfig {
     protected String itemName = null;
     protected String material = null;
     protected String materialName = null;
+    protected Tool tool = null;
     protected final Map<String, Block> ingredients = new LinkedHashMap<>();
     protected final Map<String, TagKey<Item>> tagIngredients = new LinkedHashMap<>();
     protected boolean isFlammable = false;
@@ -39,7 +40,7 @@ public class BlockConfig {
         return this;
     }
 
-    public Item getItem() {
+    public @Nullable Item getItem() {
         return item;
     }
 
@@ -48,7 +49,7 @@ public class BlockConfig {
         return this;
     }
 
-    public String getItemName() {
+    public @Nullable String getItemName() {
         return itemName;
     }
 
@@ -57,7 +58,7 @@ public class BlockConfig {
         return this;
     }
 
-    public String getMaterial() {
+    public @Nullable String getMaterial() {
         return material;
     }
 
@@ -66,7 +67,7 @@ public class BlockConfig {
         return this;
     }
 
-    public String getMaterialName() {
+    public @Nullable String getMaterialName() {
         return materialName;
     }
 
@@ -80,8 +81,7 @@ public class BlockConfig {
         return this;
     }
 
-    @NotNull
-    public Block getIngredient() {
+    public @Nullable Block getIngredient() {
         if (!ingredients.containsKey("default")) {
             throw new IllegalStateException("No default ingredient set");
         }
@@ -89,8 +89,7 @@ public class BlockConfig {
         return ingredients.get("default");
     }
 
-    @Nullable
-    public Block getIngredient(String key) {
+    public @Nullable Block getIngredient(String key) {
         return ingredients.get(key);
     }
 
@@ -104,12 +103,11 @@ public class BlockConfig {
         return this;
     }
 
-    public TagKey<Item> getTagIngredient() {
+    public @Nullable TagKey<Item> getTagIngredient() {
         return tagIngredients.get("default");
     }
 
-    @Nullable
-    public TagKey<Item> getTagIngredient(String key) {
+    public @Nullable TagKey<Item> getTagIngredient(String key) {
         return tagIngredients.get(key);
     }
 
@@ -124,6 +122,15 @@ public class BlockConfig {
 
     public boolean isFlammable() {
         return isFlammable;
+    }
+
+    public BlockConfig tool(Tool tool) {
+        this.tool = tool;
+        return this;
+    }
+
+    public @Nullable Tool getTool() {
+        return tool;
     }
 
     public BlockConfig translucent(boolean isTranslucent) {
@@ -148,13 +155,11 @@ public class BlockConfig {
         return this;
     }
 
-    @NotNull
-    public Identifier getTexture() {
+    public @Nullable Identifier getTexture() {
         return textures.getOrDefault("default", TextureMap.getId(this.getIngredient()));
     }
 
-    @Nullable
-    public Identifier getTexture(String name) {
+    public @Nullable Identifier getTexture(String name) {
         return textures.get(name);
     }
 }
