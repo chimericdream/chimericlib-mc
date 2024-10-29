@@ -1,6 +1,7 @@
 package com.chimericdream.lib.blocks;
 
 import com.chimericdream.lib.util.Tool;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.TextureMap;
@@ -15,16 +16,20 @@ import java.util.Objects;
 
 public class BlockConfig {
     protected AbstractBlock.Settings baseSettings = null;
+    protected String blockName = null;
     protected Item item = null;
+    protected RegistrySupplier<Item> itemSupplier = null;
     protected String itemName = null;
     protected String material = null;
     protected String materialName = null;
     protected Tool tool = null;
+    protected RegistrySupplier<Block> ingredientSupplier = null;
     protected final Map<String, Block> ingredients = new LinkedHashMap<>();
     protected final Map<String, TagKey<Item>> tagIngredients = new LinkedHashMap<>();
     protected boolean isFlammable = false;
     protected boolean isTranslucent = false;
     protected final Map<String, Identifier> textures = new LinkedHashMap<>();
+    protected RenderType renderType = RenderType.SOLID;
 
     public BlockConfig settings(AbstractBlock.Settings baseSettings) {
         this.baseSettings = baseSettings;
@@ -35,12 +40,21 @@ public class BlockConfig {
         return Objects.requireNonNullElseGet(this.baseSettings, () -> AbstractBlock.Settings.copy(this.getIngredient()));
     }
 
+    public BlockConfig item(RegistrySupplier<Item> itemSupplier) {
+        this.itemSupplier = itemSupplier;
+        return this;
+    }
+
     public BlockConfig item(Item item) {
         this.item = item;
         return this;
     }
 
     public @Nullable Item getItem() {
+        if (itemSupplier != null) {
+            return itemSupplier.get();
+        }
+
         return item;
     }
 
@@ -67,8 +81,22 @@ public class BlockConfig {
         return this;
     }
 
+    public @Nullable String getName() {
+        return blockName;
+    }
+
+    public BlockConfig name(String name) {
+        this.blockName = name;
+        return this;
+    }
+
     public @Nullable String getMaterialName() {
         return materialName;
+    }
+
+    public BlockConfig ingredient(RegistrySupplier<Block> blockSupplier) {
+        this.ingredientSupplier = blockSupplier;
+        return this;
     }
 
     public BlockConfig ingredient(Block block) {
@@ -82,6 +110,10 @@ public class BlockConfig {
     }
 
     public @Nullable Block getIngredient() {
+        if (ingredientSupplier != null) {
+            return ingredientSupplier.get();
+        }
+
         if (!ingredients.containsKey("default")) {
             throw new IllegalStateException("No default ingredient set");
         }
@@ -161,5 +193,29 @@ public class BlockConfig {
 
     public @Nullable Identifier getTexture(String name) {
         return textures.get(name);
+    }
+
+    public BlockConfig renderType(RenderType renderType) {
+        this.renderType = renderType;
+        return this;
+    }
+
+    public RenderType getRenderType() {
+        return renderType;
+    }
+
+    public enum RenderType {
+        SOLID("minecraft:solid"),
+        CUTOUT("minecraft:cutout"),
+        CUTOUT_MIPPED("minecraft:cutout_mipped"),
+        CUTOUT_MIPPED_ALL("minecraft:cutout_mipped_all"),
+        TRANSLUCENT("minecraft:translucent"),
+        TRIPWIRE("minecraft:tripwire");
+
+        public final String name;
+
+        RenderType(String name) {
+            this.name = name;
+        }
     }
 }
